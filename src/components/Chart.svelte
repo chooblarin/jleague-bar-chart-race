@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tweened } from "svelte/motion";
   import { writable } from "svelte/store";
   import { j2RankData, teamIds } from "../data/j2RankData";
   import { createLinearScale, Scales, setChartContext } from "../lib/chart";
@@ -6,16 +7,20 @@
   import Bars from "./Bars.svelte";
   import Ticker from "./Ticker.svelte";
 
+  const duration = 400;
   const barCount = teamIds.length;
-
-  const dimensions = writable({ width: 0, height: 0, barHeight: 0 });
-  const scales = writable<Scales>();
-  const xMax = writable<number>(NaN);
-
-  // Update data
 
   $: frameIndex = Math.min($frame, j2RankData.length - 1);
   $: currentData = j2RankData[frameIndex];
+  $: currentSection = currentData.section;
+  $: currentRecords = teamIds.map((id) => ({
+    ...currentData.rankRecords.find((d) => d.id === id),
+  }));
+
+  const dimensions = writable({ width: 0, height: 0, barHeight: 0 });
+  const scales = writable<Scales>();
+  const data = tweened<typeof currentRecords>(null, { duration }); // FIXME
+  const xMax = tweened<number>(NaN, { duration });
 
   // Update dimensions
 
@@ -27,12 +32,13 @@
   $: barHeight = height / barCount;
 
   // Update stores
+  $: data.set(currentRecords);
   $: dimensions.set({
     width,
     height,
     barHeight,
   });
-  $: xMax.set(Math.max(...currentData.rankRecords.map((d) => d.points)));
+  $: xMax.set(Math.max(...currentRecords.map((d) => d.points)));
   $: scales.set({
     x: createLinearScale([0, $xMax], [0, $dimensions.width]),
     y: createLinearScale([0, barCount], [0, $dimensions.height]),
@@ -40,7 +46,7 @@
 
   // Set chart context
   setChartContext({
-    getChart: () => ({ dimensions, scales }),
+    getChart: () => ({ data, dimensions, scales }),
   });
 </script>
 
@@ -49,8 +55,8 @@
   bind:offsetWidth={figureWidth}
   bind:offsetHeight={figureHeight}
 >
-  <Bars data={currentData.rankRecords} />
-  <Ticker label={currentData.section.label} />
+  <Bars />
+  <Ticker label={currentSection.label} />
 </figure>
 
 <style>

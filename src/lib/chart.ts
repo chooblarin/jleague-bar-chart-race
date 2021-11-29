@@ -2,6 +2,7 @@ import { scaleLinear } from "d3";
 import type { ScaleLinear } from "d3-scale";
 import { getContext, setContext } from "svelte";
 import type { Writable } from "svelte/store";
+import type { RankRecord } from "../data/j2RankData";
 
 const key = {};
 
@@ -13,6 +14,7 @@ export interface Scales {
 interface Chart {
   dimensions: Writable<{ width: number; height: number; barHeight: number }>;
   scales: Writable<Scales>;
+  data: Writable<RankRecord[]>;
 }
 
 interface ChartContext {
