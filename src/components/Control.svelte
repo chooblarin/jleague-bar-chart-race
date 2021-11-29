@@ -1,16 +1,31 @@
 <script lang="ts">
+  import { frame, startFrame, stopFrame } from "../lib/framer";
   export let maxFrameCount = 0;
 
   let isPlaying = false;
 
+  function handleRangeInput() {
+    isPlaying = false;
+  }
   function handlePlayButtonClick() {
     isPlaying = !isPlaying;
+  }
+
+  $: isPlaying ? startFrame() : stopFrame();
+  $: if ($frame >= maxFrameCount) {
+    isPlaying = false;
   }
 </script>
 
 <div class="control">
   <button on:click={handlePlayButtonClick}>{isPlaying ? "⏸" : "▶️"}</button>
-  <input type="range" min="0" max={maxFrameCount} />
+  <input
+    type="range"
+    min="0"
+    max={maxFrameCount}
+    bind:value={$frame}
+    on:input={handleRangeInput}
+  />
 </div>
 
 <style>

@@ -1,12 +1,19 @@
 <script lang="ts">
   import Chart from "./components/Chart.svelte";
   import Control from "./components/Control.svelte";
+  import { j2RankData } from "./data/j2RankData";
+  import { frame } from "./lib/framer";
+
+  const maxFrameCount = j2RankData.length;
+
+  $: frameIndex = Math.min($frame, maxFrameCount - 1);
 </script>
 
 <main>
   <h1>2021年J2リーグ Bar Chart Race</h1>
-  <Control />
+  <Control {maxFrameCount} />
   <Chart />
+  {frameIndex}
 </main>
 
 <style>

@@ -1,6 +1,10 @@
 import { writable } from "svelte/store";
 
-const elapsed = writable(0);
+const frame = writable(0);
+
+const duration = 1000;
+
+let elapsed = 0;
 
 let prev: number | undefined;
 let requestId: number | undefined;
@@ -10,33 +14,31 @@ function tick(t: number) {
     prev = t;
   }
   const diff = t - prev;
-  elapsed.update(v => v + diff);
+  elapsed += diff;
+
+  const f = Math.floor(elapsed / duration);
+  frame.set(f);
+
   prev = t;
   requestId = requestAnimationFrame(tick);
 };
 
-function start() {
+function startFrame() {
   if (!requestId) {
     prev = undefined;
     requestId = requestAnimationFrame(tick);
   }
 }
 
-function stop() {
+function stopFrame() {
   if (requestId) {
     cancelAnimationFrame(requestId);
     requestId = undefined;
   }
 }
 
-function setTime(value: number) {
-  elapsed.set(value);
-}
+frame.subscribe((value) => {
+  elapsed = value * duration;
+})
 
-const timer = {
-  start,
-  stop,
-  setTime,
-};
-
-export { timer, elapsed };
+export { frame, startFrame, stopFrame };
