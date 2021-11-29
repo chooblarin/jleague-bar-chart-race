@@ -4,6 +4,7 @@
   import { j2RankData, teamIds } from "../data/j2RankData";
   import { createLinearScale, Scales, setChartContext } from "../lib/chart";
   import { frame } from "../lib/framer";
+  import Axis from "./Axis.svelte";
   import Bars from "./Bars.svelte";
   import Ticker from "./Ticker.svelte";
 
@@ -56,6 +57,7 @@
   bind:offsetHeight={figureHeight}
 >
   <Bars />
+  <Axis />
   <Ticker label={currentSection.label} />
 </figure>
 
@@ -66,8 +68,7 @@
     width: 100%;
     height: 80vh;
     min-height: 400px;
-    border: 1px solid;
-    margin: 0;
+    margin: 0 0 8px;
     padding: 0;
   }
 </style>

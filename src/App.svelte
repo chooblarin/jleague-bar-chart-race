@@ -8,8 +8,8 @@
 
 <main>
   <h1>2021年J2リーグ Bar Chart Race</h1>
-  <Control {maxFrameCount} />
   <Chart />
+  <Control {maxFrameCount} />
 </main>
 
 <style>
@@ -25,6 +25,6 @@
     font-size: 24px;
     color: #232323;
     text-align: center;
-    margin: 12px 12px 16px;
+    margin: 12px 12px 32px;
   }
 </style>
