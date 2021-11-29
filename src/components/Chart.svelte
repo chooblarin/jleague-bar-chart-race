@@ -2,6 +2,7 @@
   import { writable } from "svelte/store";
   import { j2RankData, teamIds } from "../data/j2RankData";
   import { frame } from "../lib/framer";
+  import Ticker from "./Ticker.svelte";
 
   const barCount = teamIds.length;
 
@@ -33,6 +34,7 @@
   bind:offsetHeight={figureHeight}
 >
   {JSON.stringify(currentData)}
+  <Ticker label={currentData.section.label} />
 </figure>
 
 <style>
