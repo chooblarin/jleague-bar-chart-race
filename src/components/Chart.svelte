@@ -1,12 +1,16 @@
 <script lang="ts">
   import { writable } from "svelte/store";
   import { j2RankData, teamIds } from "../data/j2RankData";
+  import { createLinearScale, Scales, setChartContext } from "../lib/chart";
   import { frame } from "../lib/framer";
+  import Bars from "./Bars.svelte";
   import Ticker from "./Ticker.svelte";
 
   const barCount = teamIds.length;
 
   const dimensions = writable({ width: 0, height: 0, barHeight: 0 });
+  const scales = writable<Scales>();
+  const xMax = writable<number>(NaN);
 
   // Update data
 
@@ -21,10 +25,22 @@
   $: width = figureWidth;
   $: height = figureHeight;
   $: barHeight = height / barCount;
+
+  // Update stores
   $: dimensions.set({
     width,
     height,
     barHeight,
+  });
+  $: xMax.set(Math.max(...currentData.rankRecords.map((d) => d.points)));
+  $: scales.set({
+    x: createLinearScale([0, $xMax], [0, $dimensions.width]),
+    y: createLinearScale([0, barCount], [0, $dimensions.height]),
+  });
+
+  // Set chart context
+  setChartContext({
+    getChart: () => ({ dimensions, scales }),
   });
 </script>
 
@@ -33,7 +49,7 @@
   bind:offsetWidth={figureWidth}
   bind:offsetHeight={figureHeight}
 >
-  {JSON.stringify(currentData)}
+  <Bars data={currentData.rankRecords} />
   <Ticker label={currentData.section.label} />
 </figure>
 
