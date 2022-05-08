@@ -7,7 +7,7 @@
 </script>
 
 <main>
-  <h1>2021年J2リーグ Bar Chart Race</h1>
+  <h1>2022年J2リーグ Bar Chart Race</h1>
   <Chart />
   <Control {maxFrameCount} />
 </main>

@@ -1,4 +1,4 @@
-declare module '*/j2-rank-data.json' {
+declare module "*/*.json" {
   type Section = {
     label: string;
     value: string;

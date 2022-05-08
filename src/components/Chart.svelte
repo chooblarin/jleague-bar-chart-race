@@ -1,7 +1,8 @@
 <script lang="ts">
   import { tweened } from "svelte/motion";
   import { writable } from "svelte/store";
-  import { j2RankData, teamIds } from "../data/j2RankData";
+  import { teamIds } from "../data/2022/teamIds";
+  import { j2RankData } from "../data/j2RankData";
   import type { Scales } from "../lib/chart";
   import { createLinearScale, setChartContext } from "../lib/chart";
   import { frame } from "../lib/framer";
