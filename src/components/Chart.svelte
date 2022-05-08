@@ -2,7 +2,8 @@
   import { tweened } from "svelte/motion";
   import { writable } from "svelte/store";
   import { j2RankData, teamIds } from "../data/j2RankData";
-  import { createLinearScale, Scales, setChartContext } from "../lib/chart";
+  import type { Scales } from "../lib/chart";
+  import { createLinearScale, setChartContext } from "../lib/chart";
   import { frame } from "../lib/framer";
   import Axis from "./Axis.svelte";
   import Bars from "./Bars.svelte";

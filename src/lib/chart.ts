@@ -29,6 +29,9 @@ export function setChartContext(chartContext: ChartContext) {
   setContext(key, chartContext);
 }
 
-export function createLinearScale(domain: [number, number], range: [number, number]) {
+export function createLinearScale(
+  domain: [number, number],
+  range: [number, number]
+) {
   return scaleLinear().domain(domain).range(range);
 }
